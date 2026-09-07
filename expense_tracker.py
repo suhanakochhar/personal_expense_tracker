@@ -2,6 +2,7 @@ import csv
 from datetime import date
 
 expenses = []
+budget = 0
 
 try:
     with open("expenses.csv", "r", newline="") as file:
@@ -30,7 +31,8 @@ while True:
     print("4. View Category Summary")
     print("5. Delete Expense")
     print("6. Monthly Spending Summary")
-    print("7. Exit")
+    print("7. Set Monthly Budget")
+    print("8. Exit")
 
     choice = input("Enter your choice: ")
 
@@ -144,7 +146,25 @@ while True:
             print(month + ": $" + str(months[month]))
 
     elif choice == "7":
+        budget = float(input("Enter your monthly budget: "))
+
+        total = 0
+
+        for expense in expenses:
+            total += expense["amount"]
+
+        remaining = budget - total
+
+        print("Monthly Budget: $" + str(budget))
+        print("Total Spent: $" + str(total))
+        print("Remaining Budget: $" + str(remaining))
+
+        if remaining < 0:
+            print("You have exceeded your budget!")
+        else:
+            print("You are within your budget!")
+
+    elif choice == "8":
         print("Goodbye!")
         break
-
         
