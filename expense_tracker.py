@@ -1,4 +1,5 @@
 import csv
+from datetime import date
 
 expenses = []
 
@@ -10,7 +11,8 @@ try:
             expenses.append({
                 "name": row["name"],
                 "amount": float(row["amount"]),
-                "category": row["category"]
+                "category": row["category"],
+                "date": row["date"]
             })
 
 except FileNotFoundError:
@@ -27,7 +29,8 @@ while True:
     print("3. View Total Spent")
     print("4. View Category Summary")
     print("5. Delete Expense")
-    print("6. Exit")
+    print("6. Monthly Spending Summary")
+    print("7. Exit")
 
     choice = input("Enter your choice: ")
 
@@ -39,7 +42,8 @@ while True:
         expense = {
             "name": expense_name,
             "amount": amount,
-            "category": category
+            "category": category,
+            "date": str(date.today())
         }
 
         expenses.append(expense)
@@ -47,7 +51,7 @@ while True:
         with open("expenses.csv", "w", newline="") as file:
             writer = csv.DictWriter(
                 file,
-                fieldnames=["name", "amount", "category"]
+                fieldnames=["name", "amount", "category", "date"]
             )
 
             writer.writeheader()
@@ -62,7 +66,8 @@ while True:
             print(
                 expense["name"],
                 "$" + str(expense["amount"]),
-                expense["category"]
+                expense["category"],
+                expense["date"]
             )
 
     elif choice == "3":
@@ -98,7 +103,8 @@ while True:
                 str(i + 1) + ".",
                 expenses[i]["name"],
                 "$" + str(expenses[i]["amount"]),
-                expenses[i]["category"]
+                expenses[i]["category"],
+                expenses[i]["date"]
             )
 
         number = int(input("Enter the expense number to delete: "))
@@ -109,7 +115,7 @@ while True:
             with open("expenses.csv", "w", newline="") as file:
                 writer = csv.DictWriter(
                     file,
-                    fieldnames=["name", "amount", "category"]
+                    fieldnames=["name", "amount", "category", "date"]
                 )
 
                 writer.writeheader()
@@ -121,6 +127,23 @@ while True:
             print("Invalid expense number.")
 
     elif choice == "6":
+        print("\nMonthly Spending Summary:")
+
+        months = {}
+
+        for expense in expenses:
+            month = expense["date"][:7]
+            amount = expense["amount"]
+
+            if month in months:
+                months[month] += amount
+            else:
+                months[month] = amount
+
+        for month in months:
+            print(month + ": $" + str(months[month]))
+
+    elif choice == "7":
         print("Goodbye!")
         break
 

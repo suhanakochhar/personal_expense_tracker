@@ -1,2 +1,4 @@
-name,amount,category
-Starbucks,6.5,Food
+name,amount,category,date
+Clothing,20.0,Shopping,2026-09-07
+Milk,2.5,Food,2026-09-07
+Uber,11.55,Transportation,2026-09-07
