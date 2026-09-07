@@ -1,5 +1,6 @@
 import csv
 from datetime import date
+import matplotlib.pyplot as plt
 
 expenses = []
 budget = 0
@@ -32,7 +33,8 @@ while True:
     print("5. Delete Expense")
     print("6. Monthly Spending Summary")
     print("7. Set Monthly Budget")
-    print("8. Exit")
+    print("8. Spending Chart")
+    print("9. Exit")
 
     choice = input("Enter your choice: ")
 
@@ -165,6 +167,30 @@ while True:
             print("You are within your budget!")
 
     elif choice == "8":
+        categories = {}
+
+        for expense in expenses:
+            category = expense["category"]
+            amount = expense["amount"]
+
+            if category in categories:
+                categories[category] += amount
+            else:
+                categories[category] = amount
+
+        if len(categories) == 0:
+            print("No expenses to display.")
+        else:
+            plt.bar(categories.keys(), categories.values())
+            plt.title("Spending by Category")
+            plt.xlabel("Category")
+            plt.ylabel("Amount Spent ($)")
+
+            plt.savefig("spending_chart.png")
+            plt.close()
+
+            print("Spending chart created successfully!")
+            
+    elif choice == "9":
         print("Goodbye!")
         break
-        
