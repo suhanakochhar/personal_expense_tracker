@@ -2,14 +2,15 @@ expenses = []
 
 while True:
     print("========================")
-    print("PERSONAL EXPENSE TRACKER")
+    print("  PERSONAL EXPENSE TRACKER")
     print("========================")
 
     print("1. Add Expense")
     print("2. View Expenses")
     print("3. View Total Spent")
     print("4. View Category Summary")
-    print("5. Exit")
+    print("5. Delete Expense")
+    print("6. Exit")
 
     choice = input("Enter your choice: ")
 
@@ -47,7 +48,7 @@ while True:
         print("Total Spent: $" + str(total))
 
     elif choice == "4":
-        print("\nCategory Summary: ")
+        print("\nCategory Summary:")
 
         categories = {}
 
@@ -64,5 +65,24 @@ while True:
             print(category + ": $" + str(categories[category]))
 
     elif choice == "5":
+        print("\nYour Expenses:")
+
+        for i in range(len(expenses)):
+            print(
+                str(i + 1) + ".",
+                expenses[i]["name"],
+                "$" + str(expenses[i]["amount"]),
+                expenses[i]["category"]
+            )
+
+        number = int(input("Enter the expense number to delete: "))
+
+        if number >= 1 and number <= len(expenses):
+            deleted_expense = expenses.pop(number - 1)
+            print(deleted_expense["name"] + " deleted successfully!")
+        else:
+            print("Invalid expense number.")
+
+    elif choice == "6":
         print("Goodbye!")
         break
