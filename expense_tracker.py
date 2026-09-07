@@ -1,4 +1,21 @@
+import csv
+
 expenses = []
+
+try:
+    with open("expenses.csv", "r", newline="") as file:
+        reader = csv.DictReader(file)
+
+        for row in reader:
+            expenses.append({
+                "name": row["name"],
+                "amount": float(row["amount"]),
+                "category": row["category"]
+            })
+
+except FileNotFoundError:
+    pass
+
 
 while True:
     print("========================")
@@ -26,6 +43,15 @@ while True:
         }
 
         expenses.append(expense)
+
+        with open("expenses.csv", "w", newline="") as file:
+            writer = csv.DictWriter(
+                file,
+                fieldnames=["name", "amount", "category"]
+            )
+
+            writer.writeheader()
+            writer.writerows(expenses)
 
         print("Expense added successfully!")
 
@@ -79,10 +105,23 @@ while True:
 
         if number >= 1 and number <= len(expenses):
             deleted_expense = expenses.pop(number - 1)
+
+            with open("expenses.csv", "w", newline="") as file:
+                writer = csv.DictWriter(
+                    file,
+                    fieldnames=["name", "amount", "category"]
+                )
+
+                writer.writeheader()
+                writer.writerows(expenses)
+
             print(deleted_expense["name"] + " deleted successfully!")
+
         else:
             print("Invalid expense number.")
 
     elif choice == "6":
         print("Goodbye!")
         break
+
+        
